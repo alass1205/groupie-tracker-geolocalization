@@ -1,0 +1,44 @@
+{{define "content"}}
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Artists</h1>
+    </div>
+    <div class="row">
+        {{range .Artists}}
+            <div class="col-xl-2 col-md-6 mb-4">
+                <div class="card border-bottom-primary shadow h-100 py-2 zoom_on_hover">
+                        <div class="card-body h-100">
+                            <div class="no-gutters align-items-center d-flex flex-column">
+                                <div class="d-flex justify-content-center">
+                                    <img src="{{.Image}}" alt="..." class="rounded-circle bg-primary img-fluid w-100">
+
+                                </div>
+                                <div class="d-flex justify-content-center mt-3 w-100">
+                                    <div class="gallery-links d-flex align-items-center justify-content-center">
+                                        <form action="/artist" method="post">
+                                            <input type="hidden" name="id" value="{{.ID}}">
+                                            <button type="submit" class="gallery-link-btn">
+                                            <span class="font-weight-bold"> {{.Name}}</span>
+                                            </button>
+                                        </form>
+                                        
+                                    </div>
+                                
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <style>
+                .zoom_on_hover{
+                    transition: transform 0.3s;
+                }
+                .zoom_on_hover:hover{
+                transform:scale(1.2);
+                }
+            </style>
+        {{end}}
+    </div>
+
+{{end}}

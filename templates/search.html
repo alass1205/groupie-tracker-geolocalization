@@ -1,0 +1,26 @@
+{{define "search"}}
+<form method="POST" class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" action="/search">
+    <input list="search" id="search-bar" class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" name="value">
+    <datalist id="search" name="value">
+        {{range .Artists}}
+          <option value="{{.Name}}">- Name</option>
+          {{range .Members}}
+             <option value="{{.}}"> - Members</option>
+          {{end}}
+          <option value="{{.FirstAlbum}}">- First Album</option>
+          <option value="{{.CreationDate}}">- CreationDate</option>
+        {{end}}
+
+        {{range .LocationAll.Index}}
+          <optgroup>
+             {{range $twon:=.Locations}}
+            <option value="{{$twon}}">- Locations</option>
+             {{end}}
+        </optgroup>
+        {{end}}
+
+    </datalist>
+    <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
+</form>
+{{end}}
+

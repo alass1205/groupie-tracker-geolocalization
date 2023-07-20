@@ -1,0 +1,119 @@
+<!-- artist.html -->
+{{define "content"}}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Page Heading -->
+        <div class="col-xl-8 d-flex-column align-items-center m-auto">
+            <div class="d-flex flex-column col-4 m-auto align-items-center">
+                <img src="{{.Image}}" alt="image de {{.Name}}" class="rounded-circle bg-primary img-fluid w-50 h-50"><br>
+                <div class="h5 mb-0 font-weight-bold text-primary">{{.Name}}</div>
+            </div>
+            <div class="h5 font-weight-bold text-gray-800 mt-4">
+                <table class="table border-info-1 shadow rounded">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col"><span scope="row" class="h5 mb-0 font-weight-bold text-primary">Creation Date</span></th>
+                            <th scope="col"><span colspan="2" class="h5 mb-0 font-weight-bold text-primary">First Album</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row"><pre class="text-primary">{{.CreationDate}}</pre></th>
+                            <td colspan="2" class="table-active bg-primary text-white">{{.FirstAlbum}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="h5 font-weight-bold text-gray-800 mt-4">
+                <table class="table border-info-1 shadow rounded">
+                    <thead class="thead-light">
+                        <!-- <th scope="col"><span scope="row" class="h5 mb-0 font-weight-bold text-primary">Numero</span></th> -->
+                        <th scope="col"><span scope="row" class="h5 mb-0 font-weight-bold text-primary">Members Name</span></th>
+                    </thead>
+                    <tbody>
+                        {{range $index, $member := .Members}}
+                        <tr>
+                            <!-- <th scope="row" class="text-primary">{{$index}}</th> -->
+                            <td colspan="2" class="table-active bg-primary text-white">{{$member}}</td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+            </div>
+            <div class="h5 font-weight-bold text-gray-800 mt-4">
+                <table class="table border-info-1 shadow rounded" id="TableId">
+                    <thead class="thead-light">
+                        <th scope="col">
+                              Location
+                        </th>
+                        <th scope="col">
+                             Dates
+                        </th>
+                    </thead>
+                    <tbody>
+                        {{range $index, $relation := .Relations}}
+                        <tr data-latitude="{{$relation.RandomCoordinates.Lat}}" data-longitude="{{$relation.RandomCoordinates.Lng}}">
+                            {{$locationParts := split .Location "-" }}
+                            {{$city := index $locationParts 0}}
+                            {{$country := index $locationParts 1}}
+                            <th scope="row"><pre class="text-primary">{{$city}} {{$country}}</pre> </th>
+                            <td colspan="2" class="table-active bg-primary text-white">
+                                {{range .Dates}}
+                                {{.}} <br>
+                                {{end}}
+                            </td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid p-auto col-xl-11 d-flex flex-column mg-auto">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+        <h1 class="h3 mb-0 text-gray-800">Town of concert</h1>
+    </div>
+    <div class="shadow" style="width: 150vh; height: 78vh" id="mapContainer"></div>
+</div>
+
+<script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+<script type="text/javascript">
+    window.onload = function() {
+        L.mapquest.key = 'Pp1TLX6fSeXtgtVj9KS7uPVWhVx9bwum';
+
+        // Créer une carte MapQuest
+        var map = L.mapquest.map('mapContainer', {
+            center: [0, 0], // Centre initial (à remplacer par les coordonnées souhaitées)
+            layers: L.mapquest.tileLayer('dark'),
+            zoom: 2 // Zoom initial
+        });
+
+        var group = L.layerGroup().addTo(map); // Groupe de marqueurs
+        var markers = []; // Tableau pour stocker les marqueurs
+
+        // Parcourir les lignes du tableau de relations
+        var rows = document.querySelectorAll('#TableId tbody tr');
+        for (var i = 0; i < rows.length; i++) {
+            var townCell = rows[i].querySelector('th');
+            var countryCell = rows[i].querySelector('td');
+            var latitude = rows[i].dataset.latitude;
+            var longitude = rows[i].dataset.longitude;
+            var location = L.latLng(latitude, longitude);
+            console.log(location)
+
+            // Ajouter un marqueur à la carte avec les coordonnées spécifiées
+            var marker = L.marker(location).addTo(group);
+            marker.bindPopup('<strong>' + townCell.textContent.trim() + '</strong><br>' + countryCell.textContent.trim()).openPopup();
+
+            markers.push(marker); // Ajouter le marqueur au tableau
+
+            if (markers.length > 1) {
+                // Si on a plus d'un marqueur, créer une polyline pour les relier
+                var polyline = L.polyline(markers.map(function(m) { return m.getLatLng(); }), { color: 'red' }).addTo(map);
+            }
+        }
+    };
+</script>
+{{end}}

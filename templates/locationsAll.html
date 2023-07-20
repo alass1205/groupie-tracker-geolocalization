@@ -1,0 +1,144 @@
+<!-- La section "content" -->
+{{define "content"}}
+<div class="col-xl-8 col-md-6 mb-4 flex-column">
+    <div class="card-body">
+        <div class="no-gutters align-items-center d-flex flex-column">
+            <table class="table border-primary shadow rounded">
+                <thead class="thead-light">
+                    <th scope="col"><span scope="row" class="h1 font-weight-bold text-primary d-flex justify-content-center">Town</span></th>
+                    <th scope="col"><span scope="row" class="h1 font-weight-bold text-primary d-flex justify-content-center">Country</span></th>
+                </thead>
+                <tbody>
+                    {{range .LocationsAll}}
+                        {{range $location := .Locations}}
+                            {{$parts := split $location "-" }}
+                            {{$town := index $parts 0 }}
+                            {{$country := index $parts 1 }}
+                            <tr>
+                                <td><pre class="text-primary d-flex justify-content-center">{{$town}}</pre></td>
+                                <td><pre class="text-primary d-flex justify-content-center">{{$country}}</pre></td>
+                            </tr>
+                        {{end}}
+                   {{end}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="container-fluid p-auto col-xl-11 d-flex flex-column mg-auto">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+        <h1 class="h3 mb-0 text-gray-800">Town of concert</h1>
+    <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>-->
+    </div>
+    <div class="shadow " style="width: 150vh; height: 78vh" id="mapContainer"></div>   
+</div>
+
+
+        
+<script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+<!-- Script MAP -->
+
+<script type="text/javascript">
+    /**
+     * Adds a marker to the group with custom HTML content.
+     * @param {H.map.Group} group The marker group
+     * @param {H.geo.Point} coordinate The marker coordinate
+     * @param {string} html The HTML content for the marker
+     */
+    function addMarkerToGroup(group, coordinate, html) {
+      var marker = new H.map.Marker(coordinate);
+      marker.setData(html);
+      group.addObject(marker);
+    }
+
+    /**
+     * Adds markers and info bubbles to the map.
+     * Clicking on a marker opens an infobubble with HTML content.
+     * @param {H.Map} map A HERE Map instance within the application
+     */
+    function addInfoBubbles(map) {
+      var group = new H.map.Group();
+
+      map.addObject(group);
+
+      group.addEventListener('tap', function (evt) {
+        var bubble = new H.ui.InfoBubble(evt.target.getGeometry(), {
+          content: evt.target.getData()
+        });
+        ui.addBubble(bubble);
+      }, false);
+
+      function addMarkersToGroup(group) {
+        // Fonction pour obtenir des coordonnées aléatoires
+        function getRandomCoordinates() {
+          var minLat = -90;
+          var maxLat = 90;
+          var minLng = -180;
+          var maxLng = 180;
+  
+          var lat = Math.random() * (maxLat - minLat) + minLat;
+          var lng = Math.random() * (maxLng - minLng) + minLng;
+  
+          return { lat: lat, lng: lng };
+        }
+  
+        // Récupérer les éléments de la table avec l'attribut data-latlng
+        var rows = document.querySelectorAll('tbody tr');
+  
+        // Parcourir les lignes de la table
+        for (var i = 0; i < rows.length; i++) {
+          var townCell = rows[i].querySelector('td:first-child');
+          var countryCell = rows[i].querySelector('td:last-child');
+  
+          // Récupérer le nom de la ville et du pays
+          var town = townCell.textContent.trim();
+          var country = countryCell.textContent.trim();
+  
+          // Générer des coordonnées aléatoires pour la ville
+          var coordinates = getRandomCoordinates();
+  
+          // Ajouter le marqueur
+          addMarkerToGroup(group, coordinates,
+            '<div><strong>' + town + '</strong></div>' +
+            '<div>' + country + '</div>');
+        }
+      }
+
+      addMarkersToGroup(group);
+    }
+
+    // Step 1: initialize communication with the platform
+    var platform = new H.service.Platform({
+      apikey: '-OpKjuwdLQpHHyHa2JVaXs3j5e4ihmyMXLK3_zypZCI'
+    });
+
+    // Step 2: initialize a map
+    var defaultLayers = platform.createDefaultLayers();
+    var map = new H.Map(
+      document.getElementById('mapContainer'),
+      defaultLayers.vector.normal.map,
+      {
+        center: { lat: 52.5, lng: 13.4 },
+        zoom: 10,
+        pixelRatio: window.devicePixelRatio || 1
+      }
+    );
+
+    // Step 3: make the map interactive
+    var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+    var ui = H.ui.UI.createDefault(map, defaultLayers);
+
+    // Step 4: add markers and info bubbles to the map
+    addInfoBubbles(map);
+
+    window.addEventListener('resize', function () {
+      map.getViewPort().resize();
+    });
+</script>
+
+<!-- End script MAP -->
+{{end}}
