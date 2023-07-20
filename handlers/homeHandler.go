@@ -65,5 +65,8 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 			ErrorHandlerHelp(w, r, "internal error: 500", http.StatusInternalServerError, "error500.png")
 			return
 		}
+	} else {
+		ErrorHandlerHelp(w, r, "Page not found :\nError 404", http.StatusNotFound, "error404.png")
+		return
 	}
 }
