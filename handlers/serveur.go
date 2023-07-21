@@ -21,7 +21,7 @@ func StartServer() {
 	http.Handle("/artistlocation", http.HandlerFunc(LocationHandler))
 	http.Handle("/locations", http.HandlerFunc(LocationHandlerAll))
 	http.Handle("/artistdate", http.HandlerFunc(DateHandler))
-	http.Handle("/search", http.HandlerFunc(SearchHandler))
+	http.Handle("/search", http.HandlerFunc(HomeHandler))
 
 	// Démarrage du serveur HTTP
 	fmt.Println(string(colorGreen), "[SERVER_READY] : on http://localhost:8080 ✅ ") // Mise en place de l'URL pour l'utilisateur
