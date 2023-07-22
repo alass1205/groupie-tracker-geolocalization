@@ -38,16 +38,9 @@
                             Home
                         </a>
                         <!--<div class="sb-sidenav-menu-heading">Interface</div>-->
-                        <a class="nav-link collapsed text-white" href="/locations" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                            <div class="sb-nav-link-icon text-white"><i class="fas fa-map"></i></div>
-                            Locations
-                        </a>
-                        
-                        <a class="nav-link collapsed text-white" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                            <div class="sb-nav-link-icon text-white"><i class="fas fa-calendar"></i></div>
-                            Dates
-                        </a>
-                        
+                        {{ if eq .TemplateName "index.html" }}
+                           {{template "filter" .}}
+                        {{ end }}
                     </div>
                 </div>
                 
@@ -60,16 +53,26 @@
 
 <!-- fin index -->    
                 
-                </div>
+  </div>
 
     </div>
-<footer class="sticky-footer bg-white">
-     <div class="container my-auto">
-         <div class="copyright text-center my-auto">
-             <span>Copyright &copy; Groupie Traker 2023</span>
-         </div>
-     </div>
- </footer>
+    <br><br><br>
+    <!-- Footer avec un fond bleu clair et une bordure -->
+    <footer class="sticky-footer bg-secondary border-top">
+        <div class="container my-auto">
+            <!-- Ajout des liens vers les réseaux sociaux -->
+            <div class="text-center">
+                <a target="_blank" class="social-icon"><i class="fab fa-facebook"></i></a>
+                <a  target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a  target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <!-- Ajoutez d'autres liens de réseaux sociaux selon vos besoins -->
+            </div>
+            <div class="text-center my-auto">
+                <span>Copyright &copy; Groupie Traker 2023</span>
+            </div>
+        </div>
+    </footer>
+    
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#">
     <i class="fas fa-angle-up"></i>
@@ -81,5 +84,204 @@
 <script src="styles/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
                           
 
+<!-- Bootstrap core JavaScript-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="/styles/vendor/jquery/jquery.min.js"></script>
+<script src="/styles/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                
+<!-- Core plugin JavaScript-->
+<script src="/styles/vendor/jquery-easing/jquery.easing.min.js"></script>
+                
+<!-- Custom scripts for all pages->-->
+<script src="/styles/js/sb-admin-2.min.js"></script>
+<script src="/styles/js/scripts.js"></script>
+<!-- Page level plugins 
+<script src="stiles/vendor/chart.js/Chart.min.js"></script>-->
+<script>
+/*/
+    function filterList() {
+        var input, filter, artists, artistName, i;
+        input = document.getElementById('filterInput');
+        filter = input.value.toUpperCase(); // Convertir en majuscules pour une recherche insensible à la casse
+        artists = document.getElementById('artistsList').querySelectorAll('.parent');
+        
+        for (i = 0; i < artists.length; i++) {
+            artistName = artists[i].querySelector('.name .location').textContent;
+            if (artistName.toUpperCase().indexOf(filter) > -1) {
+                artists[i].style.display = ''; // Afficher l'élément s'il correspond à la recherche
+            } else {
+                artists[i].style.display = 'none'; // Masquer l'élément s'il ne correspond pas à la recherche
+            }
+        }
+    }
+    document.getElementById('filterInput').addEventListener('input', filterList);
+    /*/
+    function filterArtists() {
+        // Récupérer les checkboxes
+        const checkboxes = document.querySelectorAll('.input-checkbox');
+        input = document.getElementById('filterInput');
+        filter = input.value.toUpperCase();
+        const artists = document.getElementById('artistsList').querySelectorAll('.parent');
+        //Recuperer les dates de creations min et max
+        const min_intervalleInput = document.getElementById('min-intervalle');
+        const max_intervalleInput = document.getElementById('max-intervalle');
+        const min_selectedYear = min_intervalleInput.value;
+        const max_selectedYear = max_intervalleInput.value;
+        // Récupérer la valeur de la date du premier album saisie
+        const startDateInput = document.getElementById('min-firstalbum');
+        const endDateInput = document.getElementById('max-firstalbum');
+        const startDate = startDateInput.value;
+        const endDate = endDateInput.value;
+        // On recupere l'annee du premier album
+        const reversedStartDate = Number(startDate.split('-')[0]);
+        const reversedEndDate = Number(endDate.split('-')[0]);
+        // Tableau pour stocker le nombre de membres sélectionnés
+        const selectedMembers = [];
+        // Parcourir les checkboxes pour vérifier les cases cochées
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedMembers.push(parseInt(checkbox.value));
+            }
+        });
+        artists.forEach(artist => {
+            const creationDate = artist.querySelector(".name .creationdate").textContent;
+            const labelCreationDate = "Date:"+"   " +min_selectedYear+"-"+ max_selectedYear;
+            min_intervalleInput.parentNode.parentNode.previousElementSibling.textContent=labelCreationDate
+            const FirstAlbumDate = Number(artist.querySelector('.name .firstalbum').textContent.split('-')[2]);
+            if ((selectedMembers.length === 0) && filter=="") {
+                if ((creationDate >= min_selectedYear && creationDate <= max_selectedYear) && (FirstAlbumDate >= reversedStartDate && FirstAlbumDate <= reversedEndDate)) {
+                    artist.style.display = ''; // Afficher l'artiste s'il correspond aux critères
+                } else {
+                    artist.style.display = 'none'; // Masquer l'artiste s'il ne correspond pas aux critères
+                }
+                //artist.style.display = ''; // Afficher tous les artistes
+            } else if ((selectedMembers.length != 0) && filter==""){
+                console.log('members');
+                const members = parseInt(artist.querySelector('.name .members').textContent);
+                //artistName = artist.querySelector('.name .location').textContent;
+                if ((creationDate >= min_selectedYear && creationDate <= max_selectedYear) && (FirstAlbumDate >= reversedStartDate && FirstAlbumDate <= reversedEndDate)){
+                    if ((selectedMembers.includes(members))){
+                        artist.style.display = ''; // Afficher l'artiste s'il correspond aux critères
+                    } else {
+                        artist.style.display = 'none'; // Masquer l'artiste s'il ne correspond pas aux critères
+                    }
+                    //artist.style.display = ''; // Afficher l'artiste s'il correspond aux critères
+                } else {
+                    //if (creationDate >= min_selectedYear && creationDate <= max_selectedYear) {
+                    //    artist.style.display = ''; // Afficher l'artiste s'il correspond aux critères
+                    //} else {
+                        artist.style.display = 'none'; // Masquer l'artiste s'il ne correspond pas aux critères
+                    //}
+                    //artist.style.display = 'none'; // Masquer l'artiste s'il ne correspond pas aux critères
+                }
+            } else if ((selectedMembers.length === 0) && filter!=""){
+                console.log('location');
+                //const members = parseInt(artist.querySelector('.name .members').textContent);
+                artistName = artist.querySelector('.name .location').textContent;
+                if ((creationDate >= min_selectedYear && creationDate <= max_selectedYear) && (FirstAlbumDate >= reversedStartDate && FirstAlbumDate <= reversedEndDate)) {
+                    if ((artistName.toUpperCase().indexOf(filter) > -1)){
+                        artist.style.display = ''; // Afficher l'artiste s'il correspond aux critères
+                    } else {
+                        artist.style.display = 'none'; // Masquer l'artiste s'il ne correspond pas aux critères
+                    }
+                    //artist.style.display = ''; // Afficher l'artiste s'il correspond aux critères
+                } else {
+                    artist.style.display = 'none'; // Masquer l'artiste s'il ne correspond pas aux critères
+                }
+            } else {
+                // Parcourir les artistes et appliquer le filtre
+                console.log('members location');
+                const members = parseInt(artist.querySelector('.name .members').textContent);
+                artistName = artist.querySelector('.name .location').textContent;
+                if (creationDate >= min_selectedYear && creationDate <= max_selectedYear) {
+                    if ((selectedMembers.includes(members)) && (artistName.toUpperCase().indexOf(filter) > -1)){
+                        artist.style.display = ''; // Afficher l'artiste s'il correspond aux critères
+                    } else {
+                        artist.style.display = 'none'; // Masquer l'artiste s'il ne correspond pas aux critères
+                    }
+                }else{
+                    artist.style.display = 'none';
+                }
+            }
+        });
+    }
+    // Ajouter un gestionnaire d'événements pour les checkboxes
+    const checkboxes = document.querySelectorAll('.input-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', filterArtists);
+    });
+    document.getElementById('filterInput').addEventListener('input', filterArtists);
+    // Ajouter un gestionnaire d'événements pour l'input de plage d'années de création
+    const min_intervalleInput = document.getElementById('min-intervalle');
+    const max_intervalleInput = document.getElementById('max-intervalle');
+    min_intervalleInput.addEventListener('input', filterArtists);
+    max_intervalleInput.addEventListener('input', filterArtists);
+    // Fonction pour inverser le format de la date
+    function reverseDateFormat(dateString) {
+        // Séparer les éléments de la date
+        const dateElements = dateString.split('-');
+        console.log(dateElements[0]);
+        // Inverser les éléments de la date
+        const reversedDate = dateElements.reverse().join('-');
+        return reversedDate;
+    }
+    // Fonction pour filtrer les artistes en fonction de la date du premier album
+    function filtersArtists() {
+        // Récupérer la valeur de la date du premier album saisie
+        const startDateInput = document.getElementById('min-firstalbum');
+        const endDateInput = document.getElementById('max-firstalbum');
+        const startDate = startDateInput.value;
+        const endDate = endDateInput.value;
+        // Inverser le format de la date
+        const reversedStartDate = Number(startDate.split('-')[0]);
+        const reversedEndDate = Number(endDate.split('-')[0]);
+        // Récupérer les artistes
+        const artists = document.getElementById('artistsList').querySelectorAll('.parent');
+        // Parcourir les artistes et appliquer le filtre
+        artists.forEach(artist => {
+            const FirstAlbumDate = Number(artist.querySelector('.name .firstalbum').textContent.split('-')[2]);
+            // Filtrer par date du premier album (si une date est saisie)
+            console.log(FirstAlbumDate, reversedStartDate, reversedEndDate);
+            if (FirstAlbumDate >= reversedStartDate && FirstAlbumDate <= reversedEndDate) {
+                artist.style.display = ''; // Afficher l'artiste s'il correspond aux critères
+            } else {
+                artist.style.display = 'none'; // Masquer l'artiste s'il ne correspond pas aux critères
+            }
+        });
+    }
+    // Ajouter un gestionnaire d'événements pour la saisie de la date du premier album
+    const startDateInput = document.getElementById('min-firstalbum');
+    const endDateInput = document.getElementById('max-firstalbum');
+    startDateInput.addEventListener('input', filtersArtists);
+    endDateInput.addEventListener('input', filtersArtists);
+/*/
+    function filterArtistsCreationDate() {
+        // Récupérer la valeur de l'année de création saisie
+        const min_intervalleInput = document.getElementById('min-intervalle');
+        const max_intervalleInput = document.getElementById('max-intervalle');
+        const min_selectedYear = min_intervalleInput.value;
+        const max_selectedYear = max_intervalleInput.value;
+        //console.log(selectedYear);
+        // Récupérer les artistes
+        const artists = document.getElementById('artistsList').querySelectorAll('.parent');
+        // Parcourir les artistes et appliquer le filtre
+        artists.forEach(artist => {
+            const creationDate = artist.querySelector(".name .creationdate").textContent;
+            const labelCreationDate = "Date:"+"   " +min_selectedYear+"-"+ max_selectedYear;
+            min_intervalleInput.parentNode.parentNode.previousElementSibling.textContent=labelCreationDate
+            //console.log(min_intervalleInput.parentNode.parentNode.previousElementSibling);
+            //Filtrer par année de création
+            if (creationDate >= min_selectedYear && creationDate <= max_selectedYear) {
+                artist.style.display = ''; // Afficher l'artiste s'il correspond aux critères
+            } else {
+                artist.style.display = 'none'; // Masquer l'artiste s'il ne correspond pas aux critères
+            }
+        });
+    }
+/*/
+    
+</script>
+
 </body>
+
 </html>

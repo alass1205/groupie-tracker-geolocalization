@@ -6,10 +6,10 @@
         </div>
         <div class="row" id="artistsList">
             {{range .Artists}}
-                <div class="col-xl-2 col-md-6 mb-4 parent">
-                    <div class="card border-bottom-primary shadow h-100 py-2 zoom_on_hover second-parent">
-                            <div class="card-body h-100 third-parent">
-                                <div class="no-gutters align-items-center d-flex flex-column last-parent">
+            <div class="col-xl-2 col-md-6 mb-5 parent">
+                <div class="card border-bottom-primary shadow zoom_on_hover second-parent">
+                    <div class="card-body third-parent">
+                        <div class="no-gutters align-items-center d-flex flex-column last-parent">
                                     <div class="d-flex justify-content-center">
                                         <img src="{{.Image}}" alt="..." class="rounded-circle bg-primary img-fluid w-100">
 

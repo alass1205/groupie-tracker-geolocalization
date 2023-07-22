@@ -29,7 +29,7 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == http.MethodGet {
 		// Utilisation du moteur de rendu de templates pour generer la reponse HTML
-		parse, err := template.ParseFiles("templates/search.html", "templates/index.html", "templates/base.html")
+		parse, err := template.ParseFiles("templates/search.html", "templates/filter.html",   "templates/index.html", "templates/base.html")
 		if err != nil {
 
 			ErrorHandlerHelp(w, r, "internal error: 500", http.StatusInternalServerError, "error500.png")
@@ -75,7 +75,7 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		// Utilisation du moteur de rendu de templates pour generer la reponse HTML
-		parse, err := template.ParseFiles("templates/search.html", "templates/index.html", "templates/base.html")
+		parse, err := template.ParseFiles("templates/search.html", "templates/filter.html", "templates/index.html", "templates/base.html")
 		if err != nil {
 			fmt.Println(err)
 			ErrorHandlerHelp(w, r, "internal error: 500", http.StatusInternalServerError, "error500.png")

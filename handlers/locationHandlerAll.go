@@ -23,7 +23,7 @@ func LocationHandlerAll(w http.ResponseWriter, r *http.Request) {
 		funcs := template.FuncMap{
 			"split": strings.Split,
 		}
-		parse, err := template.New("locationsAll.html").Funcs(funcs).ParseFiles("templates/search.html", "templates/locationsAll.html", "templates/base.html")
+		parse, err := template.New("locationsAll.html").Funcs(funcs).ParseFiles("templates/search.html", "templates/filter.html", "templates/locationsAll.html", "templates/base.html")
 
 		if err != nil {
 			fmt.Println(err)

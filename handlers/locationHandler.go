@@ -20,7 +20,7 @@ func LocationHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		parse, err := template.ParseFiles("templates/search.html", "templates/locations.html", "templates/base.html")
+		parse, err := template.ParseFiles("templates/search.html", "templates/filter.html", "templates/locations.html", "templates/base.html")
 		if err != nil {
 			ErrorHandlerHelp(w, r, "internal error: 500", http.StatusInternalServerError, "")
 			return

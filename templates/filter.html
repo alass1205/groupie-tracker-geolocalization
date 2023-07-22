@@ -1,0 +1,91 @@
+{{define  "filter"}}
+
+<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+    Filters
+    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+</a>
+<div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+    <nav class="sb-sidenav-menu-nested nav">
+        <div class="mb-3">
+            <a class="nav-link" href="#">Creation Date</a>
+            <div class="col-12">
+                <div class="d-flex flex-row justify-content-between ml-1">
+                    <label for="min-intervalle">min: </label>
+                    <input type="range" class="min-control-range col-10" id="min-intervalle" value="1950" min="1950" max="2022" step="1">
+                </div>
+                <div class="d-flex flex-row justify-content-between ml-1">
+                    <label for="max-intervalle">max: </label>
+                    <input type="range" class="max-control-range col-10" id="max-intervalle" value="2022" min="1950" max="2022" step="1">
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <a class="nav-link" href="#">First Album</a>
+            <div class="d-flex flex-row col-12">
+                <input class=" col-6" type="date" id="min-firstalbum" name="min-firstalbum" value="1950-07-22" min="1950-01-01" max="2022-12-31">
+                <input class="ml-1 col-6" type="date" id="max-firstalbum" name="max-firstalbum" value="2022-12-31" min="1950-01-01" max="2022-12-31">
+            </div>
+        </div>
+        <div class="mb-3">
+            <a class="nav-link" href="#">Members</a>
+            <div class="d-flex flex-row">
+                <div class="d-flex flex-column ml-3 ">
+                    <label for="un">
+                        1
+                      </label>
+                    <input class="input-checkbox" type="checkbox" value="1" id="un">
+                </div>
+                <div class="d-flex flex-column ml-2">
+                        <label class="" for="deux">
+                            2
+                        </label>
+                        <input class="input-checkbox" type="checkbox" value="2" id="deux">
+                </div>
+                <div class="d-flex flex-column ml-2">
+                    <label for="trois">
+                        3
+                      </label>
+                    <input class="input-checkbox" type="checkbox" value="3" id="trois">
+                </div>
+                <div class="d-flex flex-column ml-2">
+                    <label for="quatre">
+                        4
+                      </label>
+                    <input class="input-checkbox" type="checkbox" value="4" id="quatre">
+                </div>
+                <div class="d-flex flex-column ml-2">
+                    <label for="cinq">
+                        5
+                      </label>
+                    <input class="input-checkbox" type="checkbox" value="5" id="cinq">
+                </div>
+                <div class="d-flex flex-column ml-2">
+                    <label for="six">
+                        6
+                      </label>
+                    <input class="input-checkbox" type="checkbox" value="6" id="six">
+                </div>
+                <div class="d-flex flex-column ml-2">
+                    <label for="sept">
+                        7
+                      </label>
+                    <input class="input-checkbox" type="checkbox" value="7" id="sept">
+                </div>
+                <div class="d-flex flex-column ml-2">
+                    <label for="huit">
+                        8
+                      </label>
+                    <input class="input-checkbox" type="checkbox" value="8" id="huit">
+                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column">
+            <span class="nav-link">Location</span>
+            <input class="form-control ml-3 col-10" id="filterInput" type="text" placeholder="Search..">
+        </div>
+    </nav>
+</div>
+
+{{end}}
+

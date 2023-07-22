@@ -34,7 +34,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 		funcs := template.FuncMap{
 			"split": strings.Split,
 		}
-		parse, err := template.New("artist.html").Funcs(funcs).ParseFiles("templates/search.html", "templates/artist.html", "templates/base.html")
+		parse, err := template.New("artist.html").Funcs(funcs).ParseFiles("templates/search.html", "templates/filter.html", "templates/artist.html", "templates/base.html")
 		if err != nil {
 			fmt.Println("a")
 			fmt.Println(err)
