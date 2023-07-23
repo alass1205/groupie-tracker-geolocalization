@@ -89,7 +89,8 @@
         var map = L.mapquest.map('mapContainer', {
             center: [0, 0], // Centre initial (à remplacer par les coordonnées souhaitées)
             layers: L.mapquest.tileLayer('dark'),
-            zoom: 2 // Zoom initial
+            zoom: 5 ,// Zoom initial
+            minZoom: 3 // Zoom minimal autorisé
         });
 
         var group = L.layerGroup().addTo(map); // Groupe de marqueurs

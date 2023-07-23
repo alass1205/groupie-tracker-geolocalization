@@ -17,10 +17,15 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 			ErrorHandlerHelp(w, r, "internal error: 500", http.StatusInternalServerError, "error500.png")
 			return
 		}
-		ids := r.FormValue("id")
+		var ids string
+		if r.FormValue("id") != "" {
+			ids = r.FormValue("id")
+		} else if r.FormValue("artistGEOID") != "" {
+			ids = r.FormValue("artistGEOID")
+		}
 		id, err := strconv.Atoi(ids)
 
-		if err != nil || (id < 1 && id > len(*artist)) {
+		if err != nil || (id < 1 && id > len(*artist)) {	
 			ErrorHandlerHelp(w, r, "internal error: 500", http.StatusInternalServerError, "error500.png")
 			return
 		}
@@ -34,7 +39,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 		funcs := template.FuncMap{
 			"split": strings.Split,
 		}
-		parse, err := template.New("artist.html").Funcs(funcs).ParseFiles("templates/search.html", "templates/filter.html", "templates/artist.html", "templates/base.html")
+		parse, err := template.New("artist.html").Funcs(funcs).ParseFiles("templates/search.html", "templates/geolocalisation.html", "templates/filter.html", "templates/artist.html", "templates/base.html")
 		if err != nil {
 			fmt.Println("a")
 			fmt.Println(err)

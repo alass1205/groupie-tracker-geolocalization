@@ -26,6 +26,7 @@
                 {{template "search" .}}
             {{ end }}
 
+
     </nav>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
@@ -38,9 +39,15 @@
                             Home
                         </a>
                         <!--<div class="sb-sidenav-menu-heading">Interface</div>-->
+                         <br>
+                        {{ if eq .TemplateName "index.html" }}
+                           {{template "geolocalisation" .}}
+                        {{ end }}
+                        <br>
                         {{ if eq .TemplateName "index.html" }}
                            {{template "filter" .}}
                         {{ end }}
+
                     </div>
                 </div>
                 

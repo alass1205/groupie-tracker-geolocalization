@@ -1,0 +1,13 @@
+{{define "geolocalisation"}}
+<form method="POST" class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" action="/artist">
+    <div class="input-group">
+        <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+        <select id="search-bar" required class="form-control form-control-sm" name="artistGEOID">
+            <option value="" disabled selected>GEOLOCALISATION</option>
+            {{range .Artists}}
+                <option value="{{.ID}}">{{.Name}}</option>
+            {{end}}
+        </select>
+    </div>
+</form>
+{{end}}
